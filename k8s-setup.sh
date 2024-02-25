@@ -2,8 +2,10 @@
 
 case $1 in
   "master01")
+    sudo apt install -y qemu-guest-agent 
     ;;
   *)
+    sudo apt install -y qemu-guest-agent 
     exit 255
     ;;
 esac

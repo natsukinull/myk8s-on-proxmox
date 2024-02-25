@@ -7,31 +7,31 @@ SNIPPET_TARGET_VOLUME=mycephfs
 SNIPPET_TARGET_PATH=/mnt/pve/${SNIPPET_TARGET_VOLUME}/snippets
 
 
-# # download the image(ubuntu 22.04 LTS)
-# wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+# download the image(ubuntu 22.04 LTS)
+wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
-# qm create $TEMPLATE_VMID --cores 2 --memory 4096 --net0 virtio,bridge=vmbr0 --name template-cp
+qm create $TEMPLATE_VMID --cores 2 --memory 4096 --net0 virtio,bridge=vmbr0 --name template-cp
 
-# # import the downloaded disk to $TEMPLATE_BOOT_IMAGE_TARGET_VOLUME storage
-# qm importdisk $TEMPLATE_VMID jammy-server-cloudimg-amd64.img $TEMPLATE_BOOT_IMAGE_TARGET_VOLUME
+# import the downloaded disk to $TEMPLATE_BOOT_IMAGE_TARGET_VOLUME storage
+qm importdisk $TEMPLATE_VMID jammy-server-cloudimg-amd64.img $TEMPLATE_BOOT_IMAGE_TARGET_VOLUME
 
-# # finally attach the new disk to the VM as scsi drive
-# qm set $TEMPLATE_VMID --scsihw virtio-scsi-pci --scsi0 $TEMPLATE_BOOT_IMAGE_TARGET_VOLUME:vm-$TEMPLATE_VMID-disk-0
+# finally attach the new disk to the VM as scsi drive
+qm set $TEMPLATE_VMID --scsihw virtio-scsi-pci --scsi0 $TEMPLATE_BOOT_IMAGE_TARGET_VOLUME:vm-$TEMPLATE_VMID-disk-0
 
-# # add Cloud-Init CD-ROM drive
-# qm set $TEMPLATE_VMID --ide2 $CLOUDINIT_IMAGE_TARGET_VOLUME:cloudinit
+# add Cloud-Init CD-ROM drive
+qm set $TEMPLATE_VMID --ide2 $CLOUDINIT_IMAGE_TARGET_VOLUME:cloudinit
 
-# # set the bootdisk parameter to scsi0
-# qm set $TEMPLATE_VMID --boot c --bootdisk scsi0
+# set the bootdisk parameter to scsi0
+qm set $TEMPLATE_VMID --boot c --bootdisk scsi0
 
-# # set serial console & agent enabled
-# qm set $TEMPLATE_VMID --serial0 socket --vga serial0 --agent enabled=1
+# set serial console & agent enabled
+qm set $TEMPLATE_VMID --serial0 socket --vga serial0 --agent enabled=1
 
-# # migrate to template
-# qm template $TEMPLATE_VMID
+# migrate to template
+qm template $TEMPLATE_VMID
 
-# # cleanup
-# rm jammy-server-cloudimg-amd64.img
+# cleanup
+rm jammy-server-cloudimg-amd64.img
 
 VM_LIST=(
     # ---
