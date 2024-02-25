@@ -1,0 +1,11 @@
+---
+- name: 01-ssh-keygen & common
+  hosts: k8s-servers-cp-leader-with-ssh
+  roles:
+    - 01-ssh-keygen
+
+# - name: 02-setup-sshd-config & common
+#   hosts: all
+#   roles:
+#     - common
+#     - 02-setup-sshd-config

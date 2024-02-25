@@ -24,8 +24,8 @@ SNIPPET_TARGET_PATH=/mnt/pve/${SNIPPET_TARGET_VOLUME}/snippets
 # # set the bootdisk parameter to scsi0
 # qm set $TEMPLATE_VMID --boot c --bootdisk scsi0
 
-# # set serial console
-# qm set $TEMPLATE_VMID --serial0 socket --vga serial0
+# # set serial console & agent enabled
+# qm set $TEMPLATE_VMID --serial0 socket --vga serial0 --agent enabled=1
 
 # # migrate to template
 # qm template $TEMPLATE_VMID
@@ -45,8 +45,8 @@ VM_LIST=(
     # ---
     #vmid #vmname      #cpu #mem  #vmsrvip    #targetip    #targethost
     "1001 master01  2    2048  192.168.100.220  192.168.100.90 pve-node3"
-    # "1002 master02  2    2048  192.168.100.221  192.168.100.90 pve-node3"
-    # "1003 master03  2    2048  192.168.100.222  192.168.100.90 pve-node3"
+    "1002 master02  2    2048  192.168.100.221  192.168.100.90 pve-node3"
+    "1003 master03  2    2048  192.168.100.222  192.168.100.90 pve-node3"
     # "1004 worker01  2    2048  192.168.100.223  192.168.100.90 pve-node3"
     # "1005 worker02  2    2048  192.168.100.224  192.168.100.90 pve-node3"
     # "1006 worker03  2    2048  192.168.100.225  192.168.100.90 pve-node3"
@@ -101,6 +101,8 @@ runcmd:
   - su - cloudinit -c "curl -sS https://github.com/natsukinull.keys >> ~/.ssh/authorized_keys"
   - su - cloudinit -c "chmod 600 ~/.ssh/authorized_keys"
   # run install scripts
+  - su - cloudinit -c "curl -s https://raw.githubusercontent.com/natsukinull/myk8s-on-proxmox/main/k8s-setup.sh > ~/k8s-setup.sh"
+  - su - cloudinit -c "sudo bash ~/k8s-setup.sh ${vmname}"
   # change default shell to bash
   - chsh -s $(which bash) cloudinit
 EOF
