@@ -1,3 +1,9 @@
+- name: apt update & full-upgrade
+  become: yes
+  apt:
+    update_cache: yes
+    upgrade: full
+
 - name: sudo no password
   become: yes
   lineinfile:
