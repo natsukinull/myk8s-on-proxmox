@@ -2,10 +2,11 @@
 
 case $1 in
   "master01")
-    sudo apt install -y qemu-guest-agent 
+    sudo apt install -y qemu-guest-agent
     ;;
   *)
-    sudo apt install -y qemu-guest-agent 
+    sudo apt install -y qemu-guest-agent
+    sudo reboot 
     exit 255
     ;;
 esac
@@ -13,18 +14,18 @@ esac
 
 sudo apt install -y unzip
 wget https://github.com/kubernetes-sigs/kubespray/archive/refs/heads/release-2.24.zip
-unzip ~/release-2.24.zip
+unzip /home/cloudinit/release-2.24.zip
 
-sudo chown -R cloudinit:cloudinit ~/kubespray-release-2.24/
+sudo chown -R cloudinit:cloudinit /home/cloudinit/kubespray-release-2.24/
 sudo apt install -y python3-pip
-sudo pip install -r ~/kubespray-release-2.24/requirements.txt 
+sudo pip install -r /home/cloudinit/kubespray-release-2.24/requirements.txt 
 sudo apt install -y sshpass
 ansible-galaxy collection install ansible.posix
 
-cp -rfp ~/kubespray-release-2.24/inventory/sample ~/kubespray-release-2.24/inventory/mycluster
-cp -p ~/kubespray-release-2.24/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml ~/kubespray-release-2.24/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml.bk
+cp -rfp /home/cloudinit/kubespray-release-2.24/inventory/sample /home/cloudinit/kubespray-release-2.24/inventory/mycluster
+cp -p /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml.bk
 
-cat <<EOF | tee ~/kubespray-release-2.24/inventory/mycluster/inventory.ini 
+cat <<EOF | tee /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini 
 [all]
 master01 ansible_host=192.168.100.220  
 master02 ansible_host=192.168.100.221  
@@ -60,13 +61,13 @@ calico-rr
 EOF
 
 
-cat <<EOF | tee ~/.ansible.cfg
+cat <<EOF | tee /home/cloudinit/.ansible.cfg
 [ssh_connection]
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
 EOF
 
 wget https://github.com/natsukinull/myk8s-on-proxmox/archive/refs/heads/main.zip
-unzip ~/main.zip
-ansible-playbook -i myk8s-on-proxmox-main/ansible/hosts/inventory.ini myk8s-on-proxmox-main/ansible/playbook_preset_kubespray.yaml
+unzip /home/cloudinit/main.zip
+ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-main/ansible/hosts/inventory.ini /home/cloudinit/myk8s-on-proxmox-main/ansible/playbook_preset_kubespray.yaml
 
 
