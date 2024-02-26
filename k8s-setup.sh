@@ -23,7 +23,8 @@ sudo apt install -y sshpass
 ansible-galaxy collection install ansible.posix
 
 cp -rfp /home/cloudinit/kubespray-release-2.24/inventory/sample /home/cloudinit/kubespray-release-2.24/inventory/mycluster
-cp -p /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml.bk
+cp -p /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml.bk
+sed 's/^kube_version: v.*/kube_version: v1.27.0/' /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml | sudo tee /home/cloudinit/kubespray-release-2.24/inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml
 
 cat <<EOF | tee /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini 
 [all]
@@ -71,3 +72,4 @@ unzip /home/cloudinit/main.zip
 ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-main/ansible/hosts/inventory.ini /home/cloudinit/myk8s-on-proxmox-main/ansible/playbook_preset_kubespray.yaml
 
 
+ansible-playbook -i /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini /home/cloudinit/kubespray-release-2.24/cluster.yml -vvv -b
