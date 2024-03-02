@@ -8,7 +8,7 @@ TEMPLATE_BOOT_IMAGE_TARGET_VOLUME=local-lvm
 BOOT_IMAGE_TARGET_VOLUME=local-lvm
 SNIPPET_TARGET_VOLUME=local
 SNIPPET_TARGET_PATH=/mnt/pve/${SNIPPET_TARGET_VOLUME}/snippets
-
+REPOSITORY_RAW_SOURCE_URL="https://raw.githubusercontent.com/natsukinull/myk8s-on-proxmox/${TARGET_BRANCH}"
 
 # download the image(ubuntu 22.04 LTS)
 wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
@@ -104,7 +104,7 @@ runcmd:
   - su - cloudinit -c "curl -sS https://github.com/natsukinull.keys >> ~/.ssh/authorized_keys"
   - su - cloudinit -c "chmod 600 ~/.ssh/authorized_keys"
   # run install scripts
-  - su - cloudinit -c "curl -s https://raw.githubusercontent.com/natsukinull/myk8s-on-proxmox/main/k8s-setup.sh > ~/k8s-setup.sh"
+  - su - cloudinit -c "curl -s ${REPOSITORY_RAW_SOURCE_URL}/k8s-setup.sh > ~/k8s-setup.sh"
   - su - cloudinit -c "sudo bash ~/k8s-setup.sh ${vmname}"
   # change default shell to bash
   - chsh -s $(which bash) cloudinit
