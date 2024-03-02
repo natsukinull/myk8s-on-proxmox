@@ -28,9 +28,9 @@ sed 's/^kube_version: v.*/kube_version: v1.27.0/' /home/cloudinit/kubespray-rele
 
 cat <<EOF | tee /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini 
 [all]
-master01 ansible_host=192.168.100.220  
-master02 ansible_host=192.168.100.221  
-master03 ansible_host=192.168.100.222  
+master01 ansible_host=192.168.240.220  
+master02 ansible_host=192.168.240.221  
+master03 ansible_host=192.168.240.222  
 # ## configure a bastion host if your nodes are not directly reachable
 # [bastion]
 # bastion ansible_host=x.x.x.x ansible_user=some_user
@@ -73,3 +73,5 @@ ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-main/ansible/hosts/inventor
 
 
 ansible-playbook -i /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini /home/cloudinit/kubespray-release-2.24/cluster.yml -vvv -b
+
+sudo reboot
