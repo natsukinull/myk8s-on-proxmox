@@ -67,11 +67,26 @@ cat <<EOF | tee /home/cloudinit/.ansible.cfg
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
 EOF
 
-wget https://github.com/natsukinull/myk8s-on-proxmox/archive/refs/heads/main.zip
-unzip /home/cloudinit/main.zip
-ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-main/ansible/hosts/inventory.ini /home/cloudinit/myk8s-on-proxmox-main/ansible/playbook_preset_kubespray.yaml
+wget https://github.com/natsukinull/myk8s-on-proxmox/archive/refs/heads/stg.zip
+unzip /home/cloudinit/stg.zip
+ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-stg/ansible/hosts/inventory.ini /home/cloudinit/myk8s-on-proxmox-stg/ansible/playbook_preset_kubespray.yaml
 
-
+sudo pip install -r /home/cloudinit/kubespray-release-2.24/requirements.txt 
 ansible-playbook -i /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini /home/cloudinit/kubespray-release-2.24/cluster.yml -vvv -b
+
+mkdir /home/cloudinit/.kube
+sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
+
+ssh cloudinit@192.168.240.221 mkdir ~/.kube
+ssh cloudinit@192.168.240.221 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ssh cloudinit@192.168.240.221 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+ssh cloudinit@192.168.240.221 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
+
+ssh cloudinit@192.168.240.222 mkdir ~/.kube
+ssh cloudinit@192.168.240.222 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ssh cloudinit@192.168.240.222 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+ssh cloudinit@192.168.240.222 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
 
 sudo reboot
