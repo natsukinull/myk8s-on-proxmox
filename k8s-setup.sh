@@ -76,22 +76,24 @@ wget https://github.com/natsukinull/myk8s-on-proxmox/archive/refs/heads/stg.zip
 unzip /home/cloudinit/stg.zip
 ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-stg/ansible/hosts/inventory.ini /home/cloudinit/myk8s-on-proxmox-stg/ansible/playbook_preset_kubespray.yaml
 
-sudo pip install -r /home/cloudinit/kubespray-release-2.24/requirements.txt 
-ansible-playbook -i /home/cloudinit/kubespray-release-2.24/inventory/mycluster/inventory.ini /home/cloudinit/kubespray-release-2.24/cluster.yml -vvv -b
+cd /home/cloudinit/kubespray-release-2.24
+ansible-playbook -i ./inventory/mycluster/inventory.ini ./cluster.yml -vvv -b
+
+sudo chown -R cloudinit:cloudinit /home/cloudinit/.ssh/
 
 mkdir /home/cloudinit/.kube
 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
 
-ssh cloudinit@192.168.240.221 mkdir ~/.kube
-ssh cloudinit@192.168.240.221 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
-ssh cloudinit@192.168.240.221 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-ssh cloudinit@192.168.240.221 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
+ssh cloudinit@192.168.240.221 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 mkdir ~/.kube
+ssh cloudinit@192.168.240.221 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ssh cloudinit@192.168.240.221 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+ssh cloudinit@192.168.240.221 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
 
-ssh cloudinit@192.168.240.222 mkdir ~/.kube
-ssh cloudinit@192.168.240.222 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
-ssh cloudinit@192.168.240.222 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-ssh cloudinit@192.168.240.222 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
+ssh cloudinit@192.168.240.222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 mkdir ~/.kube
+ssh cloudinit@192.168.240.222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 sudo cp -p -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ssh cloudinit@192.168.240.222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+ssh cloudinit@192.168.240.222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 sudo cp -p -i /etc/kubernetes/admin.conf /root/.kube/config
 
 sudo reboot
