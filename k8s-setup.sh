@@ -67,6 +67,11 @@ cat <<EOF | tee /home/cloudinit/.ansible.cfg
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
 EOF
 
+cat <<EOF | tee /root/.ansible.cfg
+[ssh_connection]
+ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+EOF
+
 wget https://github.com/natsukinull/myk8s-on-proxmox/archive/refs/heads/stg.zip
 unzip /home/cloudinit/stg.zip
 ansible-playbook -i /home/cloudinit/myk8s-on-proxmox-stg/ansible/hosts/inventory.ini /home/cloudinit/myk8s-on-proxmox-stg/ansible/playbook_preset_kubespray.yaml
