@@ -48,10 +48,10 @@ VM_LIST=(
     # targethost: VMの配置先となるProxmoxホストのホスト名
     # ---
     #vmid #vmname      #cpu #mem  #vmsrvip    #targetip    #targethost
-    "5000 master01  2    2048  192.168.240.220  192.168.200.207 pve"
+    "5000 master01  8    4096  192.168.240.220  192.168.200.207 pve"
     "5001 master02  2    2048  192.168.240.221  192.168.200.207 pve"
     "5002 master03  2    2048  192.168.240.222  192.168.200.207 pve"
-    "5003 worker01  2    2048  192.168.240.223  192.168.200.207 pve"
+    "5003 worker01  2    4096  192.168.240.223  192.168.200.207 pve"
     "5004 worker02  2    2048  192.168.240.224  192.168.200.207 pve"
     "5005 worker03  2    2048  192.168.240.225  192.168.200.207 pve"
     "5006 storage01 2    2048  192.168.240.226  192.168.200.207 pve"
@@ -77,8 +77,13 @@ do
         # move vm-disk to local
         ssh -n "${targetip}" qm move-disk "${vmid}" scsi0 "${BOOT_IMAGE_TARGET_VOLUME}" --delete true
 
+        # ssh -n "${targetip}" qm resize "${vmid}" scsi0 30G
         # resize disk (Resize after cloning, because it takes time to clone a large disk)
-        ssh -n "${targetip}" qm resize "${vmid}" scsi0 30G
+        if [[ "$vmname" == "storage01" || "$vmname" == "storage02" || "$vmname" == "storage03" ]]; then
+            ssh -n "${targetip}" qm resize "${vmid}" scsi0 60G
+        else
+            ssh -n "${targetip}" qm resize "${vmid}" scsi0 30G
+        fi
 
 # ----- #
 cat > "$SNIPPET_TARGET_PATH"/"$vmname"-user.yaml << EOF

@@ -50,14 +50,18 @@ master02
 master03
 
 [etcd]
-storage01
-storage02
-storage03
+master01
+master02
+master03
 
 [kube-node]
 worker01
 worker02
 worker03
+storage01
+storage02
+storage03
+access01
 
 [calico-rr]
 
