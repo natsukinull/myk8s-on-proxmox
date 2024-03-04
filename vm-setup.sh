@@ -114,7 +114,7 @@ runcmd:
   - su - cloudinit -c "curl -s ${REPOSITORY_RAW_SOURCE_URL}/k8s-setup.sh > ~/k8s-setup.sh"
   - su - cloudinit -c "sudo bash ~/k8s-setup.sh ${vmname}"
   # change default shell to bash
-  - chsh -s $(which bash) cloudinit
+  - chsh -s /bin/bash cloudinit
 EOF
 # ----- #
         # END irregular indent because heredoc
